@@ -34,11 +34,11 @@
                                 <input type="text" class="form-control" id="credits" name="credits" placeholder="Required">
                             </div>
 
-                            <!-- <div class="form-group" id="title1">
+                            <div class="form-group" id="title1">
                                 <label for="title">Title*</label>
                                 <input type="text" class="form-control" id="title" name="title[]" placeholder="Required">
                             </div>
-                            <div class="form-group">
+                            <!-- <div class="form-group">
                                 <label for="manufacturers">Manufacturers</label>
                                 <select class="form-control" id="manufacturers" name="manufacturers[]" onchange="selectBrand()">
                                     <?php
