@@ -9,7 +9,12 @@ class Home extends MY_Controller {
       'title' => $this->lang->line('home_title'),
       'headTitle' => $this->lang->line('home_page_title'),
       'headDesc' => $this->lang->line('home_page_subtitle')
-    );
+		);
+		
+		$this->db->order_by('id', 'DESC');
+		$this->db->limit(8);
+		$viewData['brands'] = $this->db->get('brands')->result();
+
 		$this->load->view('shared/header', $viewData);
 		$this->load->view('pages/home_page', $viewData);
 		$this->load->view('shared/footer', $viewData);

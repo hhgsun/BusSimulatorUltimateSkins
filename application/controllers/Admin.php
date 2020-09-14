@@ -55,9 +55,25 @@ class Admin extends MY_Controller {
 			'brands' => array(),
 		);
 		if($action == 'add') {
-			if(isset($_POST['name'])) {
-				$result = $this->db->insert( 'brands', array('name' => $this->input->post('name') ));
-				$viewData['result'] = $result == 1 ? 'Marka Eklendi' : 'Beklenmedik Hata';
+			if(isset($_POST['name']) && isset($_FILES['logo'])) {
+
+				$config['upload_path']    = './upload_brands/'; // set
+				$config['allowed_types']  = 'jpg|jpeg|png'; // set
+				$this->load->library('upload', $config);
+
+				if ( ! $this->upload->do_upload('logo') ) {
+					$viewData['upload_error'] = $this->upload->display_errors();
+				} else {
+					$viewData['logo_name'] = $this->upload->data()['file_name'];
+				}
+
+				if(!isset($viewData['upload_error'])) {
+					$result = $this->db->insert( 'brands', array(
+						'name' => $this->input->post('name'),
+						'logo' => $viewData['logo_name']
+					));
+					$viewData['result'] = $result == 1 ? 'Marka Eklendi' : 'Beklenmedik Hata';
+				}
 			}
 		} else if($action == 'delete') {
 			if(isset($_POST['id'])) {

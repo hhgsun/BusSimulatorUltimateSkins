@@ -41,7 +41,7 @@ if(isset($upload_error)){
         <th>ID</th>
         <th>MODEL</th>
         <th>MARKA</th>
-        <th>DOSYA</th>
+        <th>LAYOUT DOSYA</th>
         <th>CONFIRM</th>
       </tr>
     </thead>

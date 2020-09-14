@@ -7,10 +7,22 @@
   </div>
 <?php } ?>
 
+<?php
+if(isset($upload_error)){
+  echo '<pre>';
+  print_r($upload_error);
+  echo '</pre>';
+}
+?>
+
 <h2 class="my-3">Markalar</h2>
 
-<form action="/admin/brands/add" class="form-inline mb-4" method="POST">
-  <input class="form-control mr-2" name="name" placeholder="Marka Adı" />
+<form action="/admin/brands/add" class="form-inline mb-4" method="POST" enctype="multipart/form-data">
+  <input class="form-control mr-2" name="name" placeholder="Marka Adı" required />
+  <div class="custom-file form-control border-0 mr-2">
+    <input type="file" class="custom-file-input" id="logo" name="logo" required />
+    <label class="custom-file-label" for="layoutfile" data-browse="Logo Seç">Choose file</label>
+  </div>
   <button type="submit" class="btn btn-secondary">Ekle</button>
 </form>
 
@@ -20,6 +32,7 @@
       <tr>
         <th>ID</th>
         <th>MARKA</th>
+        <th>LOGO</th>
         <th>CONFIRM</th>
       </tr>
     </thead>
@@ -30,6 +43,7 @@
         <tr>
           <td><?php echo $value->id; ?></td>
           <td><?php echo $value->name; ?></td>
+          <td><img src="/upload_brands/<?php echo $value->logo; ?>" style="max-height:50px;max-width:50px;"></td>
           <td>
             <div class="btn-group mr-2">
               <form action="/admin/brands/delete" class="form-inline" method="POST">

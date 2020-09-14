@@ -20,46 +20,15 @@
                     <div class="showcase__brands">
                         <p class="showcase__title">BUS MANUFACTURES</p>
                         <ul class="showcase__list">
-                            <li class="showcase__item">
-                                <a href="tutorials.html" class="showcase__link">
-                                    <img src="/assets/img/brands/merce-ben.png" alt="">
-                                </a>
-                            </li>
-                            <li class="showcase__item">
-                                <a href="tutorials.html" class="showcase__link">
-                                    <img src="/assets/img/brands/irzar.png" alt="">
-                                </a>
-                            </li>
-                            <li class="showcase__item">
-                                <a href="tutorials.html" class="showcase__link">
-                                    <img src="/assets/img/brands/nam.png" alt="">
-                                </a>
-                            </li>
-                            <li class="showcase__item">
-                                <a href="tutorials.html" class="showcase__link">
-                                    <img src="/assets/img/brands/marcpolo.png" alt="">
-                                </a>
-                            </li>
-                            <li class="showcase__item">
-                                <a href="tutorials.html" class="showcase__link">
-                                    <img src="/assets/img/brands/neopan.png" alt="">
-                                </a>
-                            </li>
-                            <li class="showcase__item">
-                                <a href="tutorials.html" class="showcase__link">
-                                    <img src="/assets/img/brands/sania.png" alt="">
-                                </a>
-                            </li>
-                            <li class="showcase__item">
-                                <a href="tutorials.html" class="showcase__link">
-                                    <img src="/assets/img/brands/setro.png" alt="">
-                                </a>
-                            </li>
-                            <li class="showcase__item">
-                                <a href="tutorials.html" class="showcase__link">
-                                    <img src="/assets/img/brands/tempa.png" alt="">
-                                </a>
-                            </li>
+
+                            <?php foreach ($brands as $key => $value) { ?>
+                                <li class="showcase__item">
+                                    <a href="tutorials.html" class="showcase__link" title="<?php echo $value->name; ?>">
+                                        <img src="/upload_brands/<?php echo $value->logo; ?>" alt="<?php echo $value->name; ?>">
+                                    </a>
+                                </li>
+                            <?php } ?>
+
                         </ul>
                     </div>
                 </div>
