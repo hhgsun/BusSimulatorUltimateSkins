@@ -18,15 +18,15 @@
                                 </div>
                                 <form name="passchange" action="/account/changePass" method="POST" class="was-validated">
                                     <div class="form-group">
-                                        <label for="password">Mevcut Şifre</label>
-                                        <input type="password" class="form-control" id="password" name="password" placeholder="Şifrenizi yazınız">
+                                        <label for="password"><?php echo $this->lang->line('input_current_password'); ?></label>
+                                        <input type="password" class="form-control" id="password" name="password" placeholder="">
                                     </div>
                                     <div class="form-group">
-                                        <label for="password2">Yeni Şifre</label>
-                                        <input type="password" class="form-control" id="password2" name="password2" placeholder="Yeni Şifrenizi yazınız">
+                                        <label for="password2"><?php echo $this->lang->line('input_new_password'); ?></label>
+                                        <input type="password" class="form-control" id="password2" name="password2" placeholder="">
                                     </div>
                                     <div class="custom-form__submit">
-                                        <button type="submit" name="passchange" class="btn btn-info">Kaydet</button>
+                                        <button type="submit" name="passchange" class="btn btn-info"><?php echo $this->lang->line('save_text'); ?></button>
                                     </div>
                                 </form>
                             </div>

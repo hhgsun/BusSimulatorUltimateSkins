@@ -199,6 +199,102 @@ $(":file").change(function () {
     }
 });
 
+$(function() {
+    var _URL = window.URL || window.webkitURL;
+
+    $(":file").change(function() {
+
+        var orjThis = $(this);
+
+        var file, img;
+
+        var imgWidth;
+        var imgHeight;
+
+        var filename = $(this).val();
+
+        var ext = filename.split('.').pop().toLowerCase();
+
+        if(this.files[0].type !== 'image/png' && this.files[0].type !== 'image/jpeg' && this.files[0].type !== 'application/pdf') {
+            $(this).parent().find(".noFile").text("Only PNG/JPG");
+            $(this).parent().find(".noFile").addClass('text-danger');
+        }
+        else{
+            $(this).parent().find(".noFile").removeClass('text-danger');
+            if (/^\s*$/.test(filename)) {
+                $(this).parent().parent().removeClass('active');
+                $(this).parent().find(".noFile").text("No file chosen...");
+            }
+            else {
+                if(this.files[0].type !== 'application/pdf'){
+                    if ((file = this.files[0])) {
+                        img = new Image();
+                        img.onload = function() {
+                            imgWidth = this.width;
+                            imgHeight = this.height;
+
+                            if(imgWidth > 2048 || imgHeight > 2048){
+                                orjThis.parent().find(".noFile").text("Maksimum 2048px çözünürlükte görsel yükleyebilirsiniz.");
+                                orjThis.parent().find(".noFile").addClass('text-danger');
+                                orjThis.parent().parent().removeClass('active');
+                            }
+                            else{
+                                orjThis.parent().parent().addClass('active');
+                                orjThis.parent().find(".noFile").text(filename.replace("C:\\fakepath\\", ""));
+                            }
+
+                        };
+                        img.onerror = function() {
+                            //alert( "not a valid file: " + file.type);
+                        };
+                        img.src = _URL.createObjectURL(file);
+
+                    }
+                }
+                else{
+                    orjThis.parent().parent().addClass('active');
+                    orjThis.parent().find(".noFile").text(filename.replace("C:\\fakepath\\", ""));
+                }
+            }
+        }
+    });
+
+    $("form[name='dmca']").validate({
+        rules: {
+            nameSurname: {
+                required: true,
+            },
+            email: {
+                required: true,
+                email: true
+            },
+            company: {
+                required: true,
+            },
+            mod: {
+                required: true,
+            },
+            document: {
+                required: true,
+            },
+            complaint: {
+                required: true,
+            },
+        },
+        messages: {
+            nameSurname: "Ad ve soyad alanını doldurunuz.",
+            email: "E-posta adresininiz doğru yazdığınızdan emin olunuz.",
+            company: "Şirket adını doldurunuz.",
+            mod: "Link alanını doldurunuz.",
+            document: "Dosya seçiniz.",
+            complaint: "Şikayet alanını doldurunuz."
+        },
+        submitHandler: function(form) {
+            form.submit();
+        }
+    });
+});
+
 var i = 0;
 function insert() {
     i = i + 1;
@@ -214,10 +310,10 @@ function insert() {
             + '<input type="text" name="title[]" class="form-control" id="title' + i + '" placeholder="Required">'
             + '</div>');
     }
-    $('#more-skins').append('<div class="form-group" id="manufacturers-group-' + i + '">'
+    /* $('#more-skins').append('<div class="form-group" id="manufacturers-group-' + i + '">'
         + ' <label for="title' + i + '">Manufacturers* </label>'
-        + '</div>');
-    $('#manufacturers').clone().attr('id', 'manufacturersSelect' + i).attr('name', 'manufacturers[]').appendTo($('#manufacturers-group-' + i));
+        + '</div>'); */
+    /* $('#manufacturers').clone().attr('id', 'manufacturersSelect' + i).attr('name', 'manufacturers[]').appendTo($('#manufacturers-group-' + i)); */
     $('#more-skins').append('<div class="form-group" id="model-group-' + i + '">'
         + ' <label for="title' + i + '">Model* </label>'
         + '</div>');

@@ -2,28 +2,39 @@
         <div class="container">
             <div class="row">
                 <div class="showcase">
-                    <div class="showcase__card">
-                        <a href="download-skin.html">
-                            <span class="sticker">
-                                <i class="fas fa-star"></i> Editor Choice
-                            </span>
-                            <img src="/assets/img/ultimate-bus.jpg" alt="" class="showcase__card-img">
-                            <div class="showcase__card-footer">
-                                <span class="showcase__card-title">Metro Turizm Paketi</span>
-                                <span class="showcase__card-category">Uncategorized</span>
-                                <p class="showcase__card-desc">
-                                    Lorem ipsum dolor sit amet, consectetur adipisicing elit. Architecto at consequatur lorem
-                                </p>
-                            </div>
-                        </a>
-                    </div>
+                    <?php if(isset($editor_choice)) { ?>
+                        <div class="showcase__card">
+                            <a href="/skins/detail/<?php echo $editor_choice->id; ?>">
+                                <span class="sticker">
+                                    <i class="fas fa-star"></i> <?php echo $this->lang->line('editor_choice_title'); ?>
+                                </span>
+                                <img src="/uploads/<?php echo $editor_choice->screen_img; ?>" alt="" class="showcase__card-img">
+                                <div class="showcase__card-footer">
+                                    <span class="showcase__card-title"><?php echo $editor_choice->title; ?></span>
+                                    <span class="showcase__card-category">
+                                        <?php
+                                        $this->db->where('id', $editor_choice->brand);
+                                        $cbrand = $this->db->get('brands')->row();
+                                        $this->db->where('id', $editor_choice->model);
+                                        $cmodel = $this->db->get('models')->row();
+                                        echo $cbrand->name . ' - ' . $cmodel->name; ?>
+                                    </span>
+                                    <p class="showcase__card-desc">
+                                        <?php echo $editor_choice->description; ?>
+                                    </p>
+                                </div>
+                            </a>
+                        </div>
+                    <?php } ?>
                     <div class="showcase__brands">
-                        <p class="showcase__title">BUS MANUFACTURES</p>
+                        <p class="showcase__title">
+                            <?php echo $this->lang->line('bus_brands_title'); ?>
+                        </p>
                         <ul class="showcase__list">
 
                             <?php foreach ($brands as $key => $value) { ?>
                                 <li class="showcase__item">
-                                    <a href="tutorials.html" class="showcase__link" title="<?php echo $value->name; ?>">
+                                    <a href="/skins/index/1?filter_brands[<?php echo $value->id; ?>]=on" class="showcase__link" title="<?php echo $value->name; ?>">
                                         <img src="/upload_brands/<?php echo $value->logo; ?>" alt="<?php echo $value->name; ?>">
                                     </a>
                                 </li>
@@ -40,79 +51,10 @@
         <div class="container">
             <div class="row">
                 <div class="block__list">
-                    <p class="block__caption">NEWEST SKINS</p>
-                    <div class="block">
-                        <div class="block__item">
-                            <a href="tutorials.html">
-                                <img src="/assets/img/block-img.jpg" alt="" class="block__img">
-                            </a>
-                            <a href="tutorials.html" class="block__title">TRAVEGO 2020 EFE TUR</a>
-                            <div class="block__footer">
-                                <a href="#" class="block__account">musakara </a>
-                                <div class="stars">
-                                    <i class="fas fa-star check"></i>
-                                    <i class="fas fa-star check"></i>
-                                    <i class="fas fa-star check"></i>
-                                    <i class="fas fa-star"></i>
-                                    <i class="fas fa-star"></i>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="block">
-                        <div class="block__item">
-                            <a href="tutorials.html">
-                                <img src="/assets/img/block-img.jpg" alt="" class="block__img">
-                            </a>
-                            <a href="tutorials.html" class="block__title">TRAVEGO 2020 EFE TUR</a>
-                            <div class="block__footer">
-                                <a href="#" class="block__account">musakara </a>
-                                <div class="stars">
-                                    <i class="fas fa-star check"></i>
-                                    <i class="fas fa-star check"></i>
-                                    <i class="fas fa-star check"></i>
-                                    <i class="fas fa-star"></i>
-                                    <i class="fas fa-star"></i>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="block">
-                        <div class="block__item">
-                            <a href="tutorials.html">
-                                <img src="/assets/img/block-img.jpg" alt="" class="block__img">
-                            </a>
-                            <a href="tutorials.html" class="block__title">TRAVEGO 2020 EFE TUR</a>
-                            <div class="block__footer">
-                                <a href="#" class="block__account">musakara </a>
-                                <div class="stars">
-                                    <i class="fas fa-star check"></i>
-                                    <i class="fas fa-star check"></i>
-                                    <i class="fas fa-star check"></i>
-                                    <i class="fas fa-star"></i>
-                                    <i class="fas fa-star"></i>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="block">
-                        <div class="block__item">
-                            <a href="tutorials.html">
-                                <img src="/assets/img/block-img.jpg" alt="" class="block__img">
-                            </a>
-                            <a href="tutorials.html" class="block__title">TRAVEGO 2020 EFE TUR</a>
-                            <div class="block__footer">
-                                <a href="#" class="block__account">musakara </a>
-                                <div class="stars">
-                                    <i class="fas fa-star check"></i>
-                                    <i class="fas fa-star check"></i>
-                                    <i class="fas fa-star check"></i>
-                                    <i class="fas fa-star"></i>
-                                    <i class="fas fa-star"></i>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                    <p class="block__caption"><?php echo $this->lang->line('newest_title'); ?></p>
+                    <?php foreach ($new_skins as $skey => $skin) {
+                        $this->load->view("shared/skin_item_box", array('skin' => $skin));
+                    } ?>
                 </div>
             </div>
         </div>
@@ -122,161 +64,24 @@
         <div class="container">
             <div class="row">
                 <div class="block__list">
-                    <p class="block__caption">MOST DOWNLOADED SKINS</p>
-                    <div class="block">
-                        <div class="block__item">
-                            <a href="tutorials.html">
-                                <img src="/assets/img/block-img.jpg" alt="" class="block__img">
-                            </a>
-                            <a href="tutorials.html" class="block__title">TRAVEGO 2020 EFE TUR</a>
-                            <div class="block__footer">
-                                <a href="#" class="block__account">musakara </a>
-                                <div class="stars">
-                                    <i class="fas fa-star check"></i>
-                                    <i class="fas fa-star check"></i>
-                                    <i class="fas fa-star"></i>
-                                    <i class="fas fa-star"></i>
-                                    <i class="fas fa-star"></i>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="block">
-                        <div class="block__item">
-                            <a href="tutorials.html">
-                                <img src="/assets/img/block-img.jpg" alt="" class="block__img">
-                            </a>
-                            <a href="tutorials.html" class="block__title">TRAVEGO 2020 EFE TUR</a>
-                            <div class="block__footer">
-                                <a href="#" class="block__account">musakara </a>
-                                <div class="stars">
-                                    <i class="fas fa-star check"></i>
-                                    <i class="fas fa-star check"></i>
-                                    <i class="fas fa-star"></i>
-                                    <i class="fas fa-star"></i>
-                                    <i class="fas fa-star"></i>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="block">
-                        <div class="block__item">
-                            <a href="tutorials.html">
-                                <img src="/assets/img/block-img.jpg" alt="" class="block__img">
-                            </a>
-                            <a href="tutorials.html" class="block__title">TRAVEGO 2020 EFE TUR</a>
-                            <div class="block__footer">
-                                <a href="#" class="block__account">musakara </a>
-                                <div class="stars">
-                                    <i class="fas fa-star check"></i>
-                                    <i class="fas fa-star check"></i>
-                                    <i class="fas fa-star"></i>
-                                    <i class="fas fa-star"></i>
-                                    <i class="fas fa-star"></i>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="block">
-                        <div class="block__item">
-                            <a href="tutorials.html">
-                                <img src="/assets/img/block-img.jpg" alt="" class="block__img">
-                            </a>
-                            <a href="tutorials.html" class="block__title">TRAVEGO 2020 EFE TUR</a>
-                            <div class="block__footer">
-                                <a href="#" class="block__account">musakara </a>
-                                <div class="stars">
-                                    <i class="fas fa-star check"></i>
-                                    <i class="fas fa-star check"></i>
-                                    <i class="fas fa-star"></i>
-                                    <i class="fas fa-star"></i>
-                                    <i class="fas fa-star"></i>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                    <p class="block__caption"><?php echo $this->lang->line('most_down_title'); ?></p>                    
+                    <?php foreach ($most_down_skins as $skey => $skin) {
+                        $this->load->view("shared/skin_item_box", array('skin' => $skin));
+                    } ?>
                 </div>
             </div>
         </div>
     </section>
 
+
     <section class="block-section">
         <div class="container">
             <div class="row">
                 <div class="block__list">
-                    <p class="block__caption">SKIN PACKS</p>
-                    <div class="block">
-                        <div class="block__item">
-                            <a href="tutorials.html">
-                                <img src="/assets/img/block-img.jpg" alt="" class="block__img">
-                            </a>
-                            <a href="tutorials.html" class="block__title">TRAVEGO 2020 EFE TUR</a>
-                            <div class="block__footer">
-                                <a href="#" class="block__account">musakara </a>
-                                <div class="stars">
-                                    <i class="fas fa-star check"></i>
-                                    <i class="fas fa-star check"></i>
-                                    <i class="fas fa-star check"></i>
-                                    <i class="fas fa-star check"></i>
-                                    <i class="fas fa-star check"></i>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="block">
-                        <div class="block__item">
-                            <a href="tutorials.html">
-                                <img src="/assets/img/block-img.jpg" alt="" class="block__img">
-                            </a>
-                            <a href="tutorials.html" class="block__title">TRAVEGO 2020 EFE TUR</a>
-                            <div class="block__footer">
-                                <a href="#" class="block__account">musakara </a>
-                                <div class="stars">
-                                    <i class="fas fa-star check"></i>
-                                    <i class="fas fa-star check"></i>
-                                    <i class="fas fa-star check"></i>
-                                    <i class="fas fa-star check"></i>
-                                    <i class="fas fa-star check"></i>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="block">
-                        <div class="block__item">
-                            <a href="tutorials.html">
-                                <img src="/assets/img/block-img.jpg" alt="" class="block__img">
-                            </a>
-                            <a href="tutorials.html" class="block__title">TRAVEGO 2020 EFE TUR</a>
-                            <div class="block__footer">
-                                <a href="#" class="block__account">musakara </a>
-                                <div class="stars">
-                                    <i class="fas fa-star check"></i>
-                                    <i class="fas fa-star check"></i>
-                                    <i class="fas fa-star check"></i>
-                                    <i class="fas fa-star check"></i>
-                                    <i class="fas fa-star check"></i>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="block">
-                        <div class="block__item">
-                            <a href="tutorials.html">
-                                <img src="/assets/img/block-img.jpg" alt="" class="block__img">
-                            </a>
-                            <a href="tutorials.html" class="block__title">TRAVEGO 2020 EFE TUR</a>
-                            <div class="block__footer">
-                                <a href="#" class="block__account">musakara </a>
-                                <div class="stars">
-                                    <i class="fas fa-star check"></i>
-                                    <i class="fas fa-star check"></i>
-                                    <i class="fas fa-star check"></i>
-                                    <i class="fas fa-star check"></i>
-                                    <i class="fas fa-star check"></i>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                    <p class="block__caption"><?php echo $this->lang->line('skin_packs_title'); ?></p>
+                    <?php foreach ($skin_packs as $skey => $skin) {
+                        $this->load->view("shared/skin_item_box", array('skin' => $skin));
+                    } ?>
                 </div>
             </div>
         </div>

@@ -10,15 +10,12 @@
                     <?php } else { ?>
                         <div class="text">
                             <p>
-                                Skin oluşturmak için photoshop bilgisine sahip olmanız gerekmektedir!
-                            </p>
-                            <p>
-                                Skin yapmak istediğiniz otobosün yerleşim planını alt bölümde bulunan layout yükleme bölümünden indirebilirsiniz.
+                                <?php echo $this->lang->line('tutorials_toptext'); ?>
                             </p>
                         </div>
                         <form class="was-validated" action="/tutorials" method="POST">
                             <div class="form-group">
-                                <label for="manufacturers">Manufacturers</label>
+                                <label for="manufacturers"><?php echo $this->lang->line('brand_text'); ?></label>
                                 <select class="form-control" id="manufacturers" onchange="selectBrand()">
                                     <?php
                                     $brands = $this->db->get('brands');
@@ -28,7 +25,7 @@
                                 </select>
                             </div>
                             <div class="form-group">
-                                <label for="models">Model</label>
+                                <label for="models"><?php echo $this->lang->line('model_text'); ?></label>
                                 <select class="form-control" id="models" name="model_id" required>
                                     <?php
                                     $models = $this->db->get('models');
@@ -38,23 +35,20 @@
                                 </select>
                             </div>
                             <div class="form-group form-check">
-                                <input type="checkbox" class="hidden-box" id="pln"/>
+                                <input type="checkbox" class="hidden-box" id="pln" required/>
                                 <label for="pln" class="check--label">
                                     <span class="check--label-box"></span>
-                                    <span class="check--label-text"><span class="modal-trigger">Kullanıcı Sözleşmesini </span> okudum ve kabul ediyorum.</span>
+                                    <span class="check--label-text"><span class="modal-trigger"><?php echo $this->lang->line('contract_title'); ?></span></span>
                                 </label>
                             </div>
                             <div class="custom-form__submit">
-                                <button type="submit" class="btn btn-info">Download Layout</button>
+                                <button type="submit" class="btn btn-info"><?php echo $this->lang->line('tutorials_btn_down_text'); ?></button>
                             </div>
                         </form>
                     <?php } ?>
                     <div class="text">
-                        <p class="title">Skin nasıl yapılır?</p>
-                        <iframe width="560" height="315" src="https://www.youtube.com/embed/w_GC7LeCzaY"
-                                frameborder="0"
-                                allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
-                                allowfullscreen>
+                        <p class="title"><?php echo $this->lang->line('tutorials_how_skin'); ?></p>
+                        <?php echo $this->lang->line('tutorials_how_iframe_video'); ?>
                         </iframe>
                     </div>
                 </div>
@@ -67,14 +61,7 @@
     <div class="modal-content">
         <div class="modal-close"><i class="fas fa-times"></i></div>
         <p>
-            Lorem ipsum dolor sit amet, consectetur adipisicing elit. In quae quos repellendus rerum soluta!
-            Blanditiis corporis cumque, eveniet facilis ipsam iure neque porro ratione sapiente sed tempora
-            temporibus, voluptas voluptatum?
-        </p>
-        <p>
-            Lorem ipsum dolor sit amet, consectetur adipisicing elit. In quae quos repellendus rerum soluta!
-            Blanditiis corporis cumque, eveniet facilis ipsam iure neque porro ratione sapiente sed tempora
-            temporibus, voluptas voluptatum?
+            <?php echo $this->lang->line('contract_text'); ?>
         </p>
     </div>
 </div>

@@ -32,7 +32,7 @@
                         </a>
                     </div>
                     <div>
-                        <a href="dmca-form.html" class="btn btn-default">
+                        <a href="/reports" class="btn btn-default">
                             <i class="fas fa-times"></i> Report Abuse / DMCA
                         </a>
                     </div>

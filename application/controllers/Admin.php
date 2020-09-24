@@ -101,7 +101,8 @@ class Admin extends MY_Controller {
 			if(isset($_POST['name']) && isset($_POST['brand_id']) && isset($_FILES['layoutfile'])) {
 				if($this->input->post('brand_id') != -1){
 					$config['upload_path']    = './upload_layouts/'; // set
-					$config['allowed_types']  = 'jpg|jpeg|png|psd|pdf|ai'; // set
+					$config['allowed_types']  = 'jpg|jpeg|png|psd|pdf|ai|zip|rar'; // set
+					$config['max_size']       = 0; // set
 					$this->load->library('upload', $config);
 
 					if ( ! $this->upload->do_upload('layoutfile') ) {
@@ -147,26 +148,93 @@ class Admin extends MY_Controller {
 	{
 		$viewData = array(
 			'title' => "SKINLER",
-			'skins' => array(),
+			'packets' => array(),
+			'pagination_count' => 1,
 		);
-		if($action == 'add') {
-			if(isset($_POST['name'])) {
-				$result = $this->db->insert( 'models', array('name' => $this->input->post('name') ));
-				$viewData['result'] = $result == 1 ? 'Model Eklendi' : 'Beklenmedik Hata';
-			}
-		} else if($action == 'delete') {
+		if($action == 'delete') {
 			if(isset($_POST['id'])) {
 				$this->db->where('id', $this->input->post('id') );
-				$this->db->delete('models');
-				$viewData['result'] = 'Model tamamen silindi';
+				$this->db->delete('skins');
+				$viewData['result'] = 'Skin silindi';
+			}
+		}
+		if(isset($_GET['onayla'])) {
+			$id = $_GET['onayla'];
+			$this->db->set('status', 1);
+			$this->db->where('id', $id);
+			$this->db->update('packets');
+		} else if(isset($_GET['onaykaldir'])) {
+			$id = $_GET['onaykaldir'];
+			$this->db->set('status', 0);
+			$this->db->where('id', $id);
+			$this->db->update('packets');
+		}
+		if(isset($_GET['skinpack'])) {
+			$id = $_GET['skinpack'];
+			$this->db->set('is_pack', $this->input->get('skinpack_val'));
+			$this->db->where('id', $id);
+			$this->db->update('packets');
+		}
+		if(isset($_GET['delete_pack'])) {
+			if(isset($_GET['delete_pack'])) {
+				$this->db->where('id', $this->input->get('delete_pack') );
+				$this->db->delete('packets');
+				$viewData['result'] = 'Silindi';
+			}
+		}
+		if(isset($_GET['editor_secimi'])) {
+			if(isset($_GET['editor_secimi'])) {
+				$this->db->set('editor_choice', 0);
+				$this->db->where('editor_choice', 1);
+				$this->db->update('packets');
+				$this->db->set('editor_choice', 1);
+				$this->db->where('id', $this->input->get('editor_secimi') );
+				$this->db->update('packets');
+				$viewData['result'] = 'Başarılı';
 			}
 		}
 
-		$this->db->order_by('id', 'DESC');
-		$viewData['skins'] = $this->db->get('skins')->result();
+
+		$skin_list = $this->db->get('packets');
+    if($skin_list->num_rows() > 0) {
+      $one_list_count = 12;
+      $current_page = isset($_GET['page']) ? $_GET['page'] : 1;
+      $offset_count = 0;
+      if($current_page > 1) {
+        $offset_count = ($current_page - 1) * $one_list_count;
+      }
+      $skin_total_number = $skin_list->num_rows();
+      $viewData['pagination_count'] = floor($skin_total_number / $one_list_count);
+      if($skin_total_number % $one_list_count > 0) {
+        $viewData['pagination_count'] = $viewData['pagination_count'] + 1;
+      }
+			$this->db->order_by('id', 'DESC');
+      $skin_list = $this->db->limit($one_list_count, $offset_count)->get('packets');
+      $viewData['packets'] = $skin_list->result();
+    }
 
 		$this->load->view('admin/admin_header', $viewData);
 		$this->load->view('admin/skins_page', $viewData);
+		$this->load->view('admin/admin_footer', $viewData);
+	}
+
+	public function reports($action = null)
+	{
+		$viewData = array(
+			'title' => "Raporlar DMCA",
+			'reports' => array(),
+		);
+
+		if($action == 'delete') {
+			$this->db->where('id', $this->input->post('id'));
+			$this->db->delete('reports');
+			$viewData['result'] = 'silindi';
+		}
+
+		$viewData['reports'] = $this->db->get('reports')->result();
+
+		$this->load->view('admin/admin_header', $viewData);
+		$this->load->view('admin/reports_page', $viewData);
 		$this->load->view('admin/admin_footer', $viewData);
 	}
 }

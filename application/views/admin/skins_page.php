@@ -7,90 +7,132 @@
   </div>
 <?php } ?>
 
+
+
+
+
+
 <h2 class="my-3">Skinler</h2>
-<div class="table-responsive">
-  <table class="table table-striped table-sm">
-    <thead>
-      <tr>
-        <th>ID</th>
-        <th>USER ID</th>
-        <th>EMAIL</th>
-        <th>COMPANY</th>
-        <th>IMG</th>
-        <th>işlemler</th>
-      </tr>
-    </thead>
-    <tbody>
 
-      <?php foreach ($skins as $key => $value) { ?>
 
-        <tr>
-          <td><?php echo $value->id; ?></td>
-          <td><?php echo $value->user_id; ?></td>
-          <td><?php echo $value->email; ?></td>
-          <td><?php echo $value->business; ?></td>
-          <td>
-            <img src="/uploads/<?php echo $value->skin_img; ?>" style="max-height:200px; max-width:200px;" />
-          </td>
-          <td>
-            işlemler
-            <?php if(/* $value->id != $this->session->user_id */ false) { ?>
-            <div class="btn-group mr-2">
-              <?php if($value->is_admin) { ?>
-                <button type="button" class="btn btn-sm btn-outline-secondary active" onclick="adminSet(<?php echo $value->id; ?>, 0)">Admin</button>
-              <?php } else { ?>
-                <button type="button" class="btn btn-sm btn-outline-secondary" onclick="adminSet(<?php echo $value->id; ?>, 1)">Admin</button>
-              <?php } ?>
-              <?php if($value->is_editor) { ?>
-                <button type="button" class="btn btn-sm btn-outline-secondary active" onclick="editorSet(<?php echo $value->id; ?>, 0)">Editör</button>
-              <?php } else { ?>
-                <button type="button" class="btn btn-sm btn-outline-secondary" onclick="editorSet(<?php echo $value->id; ?>, 1)">Editör</button>
-              <?php } ?>
-              <button type="button" class="btn btn-sm btn-outline-danger" onclick="userDelete(<?php echo $value->id; ?>)">Sil</button>
-            </div>
+<div class="accordion" id="accordionPackets">
+  <?php
+  if(isset($packets)) {
+  foreach ($packets as $pkey => $package) { ?>
+    <div class="card">
+      <div class="card-header" id="headingOne">
+        <h2 class="d-flex justify-content-between mb-0">
+          <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapse_<?php echo $package->id; ?>" aria-expanded="false" aria-controls="collapse_<?php echo $package->id; ?>">
+            <?php echo $package->title; ?>
+          </button>
+          <?php if($package->status == 1) { ?>
+            <a href="?onaykaldir=<?php echo $package->id; ?>" class="btn btn-outline-danger">Onay Kaldır</a>
+          <?php } else { ?>
+            <a href="?onayla=<?php echo $package->id; ?>" class="btn btn-success">Onayla</a>
+          <?php } ?>
+        </h2>
+      </div>
+
+      <div id="collapse_<?php echo $package->id; ?>" class="collapse" aria-labelledby="headingOne" data-parent="#accordionPackets">
+        <div class="card-body">
+          <div class="text-right pb-2">
+            <?php if($package->is_pack) { ?>
+              <a href="?skinpack=<?php echo $package->id; ?>&skinpack_val=0" class="btn btn-outline-info">Skin Pack Kaldır</a>
+            <?php } else { ?>
+              <a href="?skinpack=<?php echo $package->id; ?>&skinpack_val=1" class="btn btn-outline-info">Skin Pack Yap</a>
             <?php } ?>
-          </td>
-        </tr>
+            <?php if($package->editor_choice == 0) { ?>
+              <a href="?editor_secimi=<?php echo $package->id; ?>" class="btn btn-outline-info">Editör Seçimi</a>
+            <?php } ?>
+          </div>
 
-      <?php } ?>
+          <div class="table-responsive">
+            <table class="table table-striped table-sm">
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>PACKAGE ID</th>
+                  <th>TITLE</th>
+                  <th>BRAND-MODEL</th>
+                  <th>IMG</th>
+                  <th>SKIN</th>
+                  <th>işlemler</th>
+                </tr>
+              </thead>
+              <tbody>
+                <?php
+                $this->db->where('package_id', $package->id);
+                $skins = $this->db->get('skins')->result();
+                foreach ($skins as $skey => $skin) { ?>
+                  <tr>
+                    <td><?php echo $skin->id; ?></td>
+                    <td><?php echo $skin->package_id; ?></td>
+                    <td><?php echo $skin->title; ?></td>
+                    <td><?php echo $skin->brand; ?>-<?php echo $skin->model; ?></td>
+                    <td>
+                      <a href="/uploads/<?php echo $skin->screen_img; ?>" target="_blank">
+                        <img src="/uploads/<?php echo $skin->screen_img; ?>" style="max-height:200px; max-width:200px;" />
+                      </a>
+                    </td>
+                    <td>
+                      <a href="/uploads/<?php echo $skin->skin_img; ?>" target="_blank">
+                        <img src="/uploads/<?php echo $skin->skin_img; ?>" style="max-height:200px; max-width:200px;" />
+                      </a>
+                    </td>
+                    <td>
+                      <div class="btn-group mr-2">
+                        <form action="/admin/skins/delete" class="form-inline" method="POST">
+                          <input name="id" value="<?php echo $skin->id; ?>" hidden="hidden">
+                          <button onclick="deleteLine()" class="btn btn-outline-danger">Sil</button>
+                        </form>
+                      </div>
+                    </td>
+                  </tr>
 
-    </tbody>
-  </table>
+                <?php } ?>
+              </tbody>
+            </table>
+            <?php if(count($skins) < 1) { ?>
+              <div class="text-right pb-2">
+                <a href="?delete_pack=<?php echo $package->id; ?>" class="btn btn-outline-danger">SİL</a>
+              </div>
+            <?php } ?>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  <?php }
+} ?>
 </div>
 
+
+<nav aria-label="Page navigation example" class="m-1 my-4">
+  <ul class="pagination">
+    <?php if(isset($_GET['page'])){
+      if($_GET['page'] != 1) { ?>
+      <li class="page-item"><a class="page-link" href="?page=<?php echo isset($_GET['page']) ? $_GET['page'] - 1 : 1; ?>"><</a></li>
+    <?php }
+    } else {
+      $_GET['page'] = 1;
+    } ?>
+    <?php for ($i=1; $i < $pagination_count + 1; $i++) { ?>
+      <li class="page-item <?php echo $i == (isset($_GET['page']) ? $_GET['page'] : 1) ? 'active' : ''; ?>"><a class="page-link" href="?page=<?php echo $i; ?>"><?php echo $i; ?></a></li>
+    <?php } ?>
+    <?php if($_GET['page'] != $pagination_count) { ?>
+      <li class="page-item"><a class="page-link" href="?page=<?php echo isset($_GET['page']) ? $_GET['page'] + 1 : 1; ?>">></a></li>
+    <?php } ?>
+  </ul>
+</nav>
+
+
 <script>
-function adminSet(userId, conf) {
-  if(conf == 1) {
-    var d = confirm('Kullanıcıyı Admin yapmak istediğinize eminmisiniz?');
-    if(d) {
-      location.replace('/admin/users/admin?id=' + userId + '&confirm=' + conf);
-    }
+function deleteLine() {
+  var c = confirm("Silmek istediğinize eminmisiniz?");
+  if(c){
+    $(this).submit();
   } else {
-    var d = confirm('Kullanıcıyı Adminlikten kaldırmak istediğinize eminmisiniz?');
-    if(d) {
-      location.replace('/admin/users/admin?id=' + userId + '&confirm=' + conf);
-    }
-  }
-}
-
-function editorSet(userId, conf) {
-  if(conf == 1) {
-    var d = confirm('Kullanıcıyı Editör yapmak istediğinize eminmisiniz?');
-    if(d) {
-      location.replace('/admin/users/editor?id=' + userId + '&confirm=' + conf);
-    }
-  } else {
-    var d = confirm('Kullanıcıyı Editörlükten kaldırmak istediğinize eminmisiniz?');
-    if(d) {
-      location.replace('/admin/users/editor?id=' + userId + '&confirm=' + conf);
-    }
-  }
-}
-
-function userDelete(userId) {
-  var d = confirm('Kullanıcıyı silmek istediğinize eminmisiniz?');
-  if(d) {
-    location.replace('/admin/users/delete?id=' + userId + '&confirm=1');
+    event.preventDefault();
   }
 }
 </script>

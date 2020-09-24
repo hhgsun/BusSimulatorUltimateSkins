@@ -28,11 +28,18 @@ if( isset($_GET['selectLanguage']) ) {
                     <img src="/assets/img/logo.png" alt="Logo" class="menu__logo">
                 </a>
                 <div class="menu-nav">
-                    <a href="/" class="menu-nav__link <?php echo $this->uri->segment(1) == null ? 'active' : ''; ?>">Home</a>
-                    <a href="skins.html" class="menu-nav__link">All Skins</a>
-                    <a href="#" class="menu-nav__link">Buses</a>
-                    <a href="download-skin.html" class="menu-nav__link">Skin Packs</a>
-                    <a href="/tutorials" class="menu-nav__link <?php echo $this->uri->segment(1) == 'tutorials' ? 'active' : ''; ?>">Tutorials</a>
+                    <a href="/" class="menu-nav__link <?php echo $this->uri->segment(1) == null ? 'active' : ''; ?>">
+                        <?php echo $this->lang->line('headnav_home'); ?>
+                    </a>
+                    <a href="/skins/index/1" class="menu-nav__link <?php echo ($this->uri->segment(1) == 'skins' && $this->uri->segment(2) == 'index') ? 'active' : ''; ?>">
+                        <?php echo $this->lang->line('headnav_allskins'); ?>
+                    </a>
+                    <a href="/skins/packs/1" class="menu-nav__link <?php echo $this->uri->segment(2) == 'packs' ? 'active' : ''; ?>">
+                        <?php echo $this->lang->line('headnav_skinpacks'); ?>
+                    </a>
+                    <a href="/tutorials" class="menu-nav__link <?php echo $this->uri->segment(1) == 'tutorials' ? 'active' : ''; ?>">                    
+                        <?php echo $this->lang->line('headnav_tutorials'); ?>
+                    </a>
                     <div class="menu-nav__multi bg">
                         <div class="menu-nav__multi-text">
                             <!--Kullanıcı giriş yaptıktan sonra ikon yanında adı yazılacak-->
@@ -41,16 +48,22 @@ if( isset($_GET['selectLanguage']) ) {
                         <div class="menu-nav__dropdown bg">
                             <!--Kullanıcı giriş yaptıktan sonra Hesabım menüsü açılacak-->
                             <?php if(isset($this->session->user_id)){ ?>
-                                <a href="/account/index" class="menu-nav__dropdown-link">Hesabım</a>
+                                <a href="/account/index/1" class="menu-nav__dropdown-link">
+                                    <?php echo $this->lang->line('headnav_account'); ?>
+                                </a>
                             <?php } else { ?>
-                                <a href="/account/register" class="menu-nav__dropdown-link">Hesap Oluştur</a>
-                                <a href="/account/login" class="menu-nav__dropdown-link">Giriş</a>
+                                <a href="/account/register" class="menu-nav__dropdown-link">
+                                    <?php echo $this->lang->line('headnav_register'); ?>
+                                </a>
+                                <a href="/account/login" class="menu-nav__dropdown-link">
+                                    <?php echo $this->lang->line('headnav_login'); ?>
+                                </a>
                             <?php } ?>
                         </div>
                     </div>
                     <a href="/skins/uploadskin" class="menu-nav__btn <?php echo $this->uri->segment(2) == 'uploadskin' ? 'active' : ''; ?>">
                         <i class="fas fa-plus"></i>
-                        Upload Skin
+                        <?php echo $this->lang->line('headnav_uploadskin'); ?>
                     </a>
                     <div class="menu-nav__multi" style="text-transform: capitalize;">
                         <div class="menu-nav__multi-text">
@@ -93,15 +106,18 @@ if( isset($_GET['selectLanguage']) ) {
         </section>
         <section class="mobile-menu">
             <span class="mobile-menu__close">
-                <i class="fas fa-times"></i> Close
+                <i class="fas fa-times"></i> <?php echo $this->lang->line('close_text'); ?>
             </span>
-            <a href="#" class="mobile-menu__link active">Home</a>
-            <a href="#" class="mobile-menu__link">All Skins</a>
-            <a href="#" class="mobile-menu__link">Buses</a>
-            <a href="#" class="mobile-menu__link">Skin Packs</a>
-            <a href="#" class="mobile-menu__link">Tutorials</a>
-            <a href="#" class="mobile-menu__link">Upload Skin</a>
-            <a href="#" class="mobile-menu__link">Hesabım</a>
-            <a href="#" class="mobile-menu__link">Çıkış Yap</a>
+            <a href="/" class="mobile-menu__link active"><?php echo $this->lang->line('headnav_home'); ?></a>
+            <a href="/skins/index/1" class="mobile-menu__link"><?php echo $this->lang->line('headnav_allskins'); ?></a>
+            <a href="/skins/packs/1" class="mobile-menu__link"><?php echo $this->lang->line('headnav_skinpacks'); ?></a>
+            <a href="/tutorials" class="mobile-menu__link"><?php echo $this->lang->line('headnav_tutorials'); ?></a>
+            <?php if(isset($this->session->user_id)){ ?>
+                <a href="/account/index/1" class="mobile-menu__link"><?php echo $this->lang->line('headnav_account'); ?></a>
+                <a href="/account/logout" class="mobile-menu__link"><?php echo $this->lang->line('account_nav_logout_title'); ?></a>
+            <?php } else { ?>
+                <a href="/account/register" class="mobile-menu__link"><?php echo $this->lang->line('headnav_register'); ?></a>
+                <a href="/account/login" class="mobile-menu__link"><?php echo $this->lang->line('headnav_login'); ?></a>
+            <?php } ?>
         </section>
     </header>

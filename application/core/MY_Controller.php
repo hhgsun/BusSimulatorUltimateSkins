@@ -11,4 +11,5 @@ class MY_Controller extends CI_Controller {
     }
     $this->lang->load("file", $selectedLang);
   }
+
 }

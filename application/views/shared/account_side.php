@@ -1,25 +1,20 @@
-                    <span class="btn btn-default mobile-filter">Hesabım</span>
+                    <span class="btn btn-default mobile-filter"><?php echo $this->lang->line('account_nav_title'); ?></span>
                     <form action="">
                         <div class="filter">
-                            <div class="filter__close"><i class="fas fa-times"></i>Kapat</div>
-                            <div class="filter__caption">Hesabım - <?php echo 'UID:' . $this->session->user_id; ?></div>
+                            <div class="filter__close"><i class="fas fa-times"></i><?php echo $this->lang->line('close_text'); ?></div>
+                            <div class="filter__caption"><?php echo $this->lang->line('account_nav_title'); ?></div>
                             <div class="filter__category">
-                                <p class="filter__title">Skinlerim</p>
+                                <p class="filter__title"><?php echo $this->lang->line('account_nav_skins_title'); ?></p>
                                 <ul class="filter__list">
                                     <li class="filter__item">
-                                        <label class="check--label">
-                                            <span class="check--label-text">Mercedes-Benz (22)</span>
-                                        </label>
-                                    </li>
-                                    <li class="filter__item">
-                                        <label class="check--label">
-                                            <span class="check--label-text">Setra (22)</span>
-                                        </label>
+                                        <a href="/account/index/1" class="check--label">
+                                            <span class="check--label-text"><?php echo $this->lang->line('account_nav_packets_title'); ?></span>
+                                        </a>
                                     </li>
                                 </ul>
                             </div>
                             <div class="filter__category">
-                                <p class="filter__title">Üyelik</p>
+                                <p class="filter__title"><?php echo $this->lang->line('account_nav_member_title'); ?></p>
                                 <ul class="filter__list">
                                     <?php if($this->session->is_admin){ ?>
                                         <li class="filter__item">
@@ -30,17 +25,17 @@
                                     <?php } ?>
                                     <li class="filter__item">
                                         <a href="/account/myinfo" class="check--label">
-                                            <span class="check--label-text">Bilgilerim</span>
+                                            <span class="check--label-text"><?php echo $this->lang->line('account_nav_info_title'); ?></span>
                                         </a>
                                     </li>
                                     <li class="filter__item">
                                         <a href="/account/changepass" class="check--label">
-                                            <span class="check--label-text">Şifre Değiştir</span>
+                                            <span class="check--label-text"><?php echo $this->lang->line('account_nav_pass_title'); ?></span>
                                         </a>
                                     </li>
                                     <li class="filter__item">
                                         <a href="/account/logout" class="check--label">
-                                            <span class="check--label-text">Çıkış</span>
+                                            <span class="check--label-text"><?php echo $this->lang->line('account_nav_logout_title'); ?></span>
                                         </a>
                                     </li>
                                 </ul>

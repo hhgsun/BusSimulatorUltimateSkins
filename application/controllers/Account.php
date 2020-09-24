@@ -3,12 +3,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Account extends MY_Controller {
 
-  public function __construct() {
-    parent::__construct();
-    $this->load->database();
-  }
-
-	public function index()
+	public function index($page_number = null)
 	{
     if(!isset($this->session->user_id)) {
       header("Location: /account/login");
@@ -16,8 +11,31 @@ class Account extends MY_Controller {
     $viewData = array(
       'title' => $this->lang->line('account_title'),
       'headTitle' => $this->lang->line('account_title'),
-      'headDesc' => 'puan'
+      'headDesc' => '',
+      'pagination_count' => 0,
+      'packets' => array(),
     );
+
+    // pagination count
+    $this->db->where('user_id', $this->session->user_id);
+    $packets = $this->db->get('packets');
+    if($packets->num_rows() > 0) {
+      $one_list_count = 12;
+      $current_page = isset($page_number) ? $page_number : 1;
+      $offset_count = 0;
+      if($current_page > 1) {
+        $offset_count = ($current_page - 1) * $one_list_count;
+      }
+      $skin_total_number = $packets->num_rows();
+      $viewData['pagination_count'] = floor($skin_total_number / $one_list_count);
+      if($skin_total_number % $one_list_count > 0) {
+        $viewData['pagination_count'] = $viewData['pagination_count'] + 1;
+      }
+      $this->db->where('user_id', $this->session->user_id);
+      $packets = $this->db->limit($one_list_count, $offset_count)->get('packets');
+      $viewData['packets'] = $packets->result();
+    }
+
 		$this->load->view('shared/header', $viewData);
 		$this->load->view('pages/account_page', $viewData);
 		$this->load->view('shared/footer', $viewData);
@@ -98,6 +116,7 @@ class Account extends MY_Controller {
               'email' => $query->row()->email,
               'username' => $query->row()->username,
               'is_admin' => $query->row()->is_admin,
+              'is_editor' => $query->row()->is_editor,
             );
             $this->session->set_userdata($sessionData);
             header("Location: /account");
@@ -132,7 +151,7 @@ class Account extends MY_Controller {
     $viewData = array(
       'title' => $this->lang->line('account_title'),
       'headTitle' => $this->lang->line('account_title'),
-      'headDesc' => 'puan'
+      'headDesc' => ''
     );
 
     if(isset($_POST['save'])) {
